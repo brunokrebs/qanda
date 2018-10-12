@@ -10,6 +10,7 @@ const app = express();
 
 // create database
 const questions = [];
+let count = 0;
 
 // enchancing app security with Helmet
 app.use(helmet());
@@ -49,14 +50,28 @@ app.get('/:id', (req, res) => {
 app.post('/', (req, res) => {
   const { title, description } = req.body;
   const newQuestion = {
-    id: questions.length + 1,
+    id: count + 1,
     title,
     description,
     answers: [],
   };
-
+  count += 1;
   questions.push(newQuestion);
   res.status(200).send();
+});
+
+// delete a question
+app.delete('/:id', (req, res) => {
+  const { id } = req.params;
+
+  for (let i = 0; i < questions.length; i += 1) {
+    if (i + 1 === id) {
+      questions.splice(i, 1);
+      return res.status(200).send();
+    }
+  }
+
+  return res.status(500).send();
 });
 
 // insert answer to question
