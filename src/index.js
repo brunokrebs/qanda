@@ -64,8 +64,9 @@ app.post('/', (req, res) => {
 app.delete('/:id', (req, res) => {
   const { id } = req.params;
 
-  for (let i = 0; i < questions.length; i += 1) {
-    if (i + 1 === id) {
+  for (let i = 0; i < questions.length; i++) {
+    const question = questions[i];
+    if (question.id === parseInt(id)) {
       questions.splice(i, 1);
       return res.status(200).send();
     }
